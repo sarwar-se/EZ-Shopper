@@ -1,0 +1,38 @@
+<configuration>
+    <property name="LOG_HOME" value="D:\Development\logs"/>
+    <property name="LOG_FILENAME" value="web_log"/>
+    <property name="LOG_FILE_EXT" value="txt"/>
+    <property name="LOG_AGE_DAYS" value="10"/>
+    <property name="MAX_FILE_SIZE" value="50MB"/>
+    <property name="TOTAL_LOG_SIZE_CAP" value="10GB"/>
+
+    <property name="CONSOLE_LOG_PATTERN"
+              value="%d{HH:mm:ss.SS} %magenta([%thread]) %highlight(%-5level) %logger{36}.%M - %msg%n"/>
+    <property name="FILE_LOG_PATTERN"
+              value="%d{dd-MM-yyyy HH:mm:ss.SS} %magenta([%t]) %highlight(%-5level) %logger{36} - %M Params:%kvp - %msg: %ex%n"/>
+
+    <appender name="CONSOLE_LOG" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${CONSOLE_LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+    <appender name="FILE_LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_HOME}\${LOG_FILENAME}.${LOG_FILE_EXT}</file>
+        <encoder>
+            <pattern>${FILE_LOG_PATTERN}</pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_HOME}\${LOG_FILENAME}.%d{yyyy-MM-dd}.%i.${LOG_FILE_EXT}</fileNamePattern>
+            <maxFileSize>${MAX_FILE_SIZE}</maxFileSize>
+            <maxHistory>${LOG_AGE_DAYS}</maxHistory>
+            <totalSizeCap>${TOTAL_LOG_SIZE_CAP}</totalSizeCap>
+        </rollingPolicy>
+    </appender>
+
+    <root level="DEBUG">
+        <appender-ref ref="CONSOLE_LOG"/>
+    </root>
+<!--    <logger name="com.eshoppers" level="DEBUG" additivity="false">-->
+<!--        <appender-ref ref="FILE_LOG"/>-->
+<!--    </logger>-->
+</configuration>
