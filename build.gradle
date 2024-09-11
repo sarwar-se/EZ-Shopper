@@ -28,7 +28,15 @@ dependencies {
 
     implementation 'ch.qos.logback:logback-classic:1.5.6'
     implementation 'org.webjars:bootstrap:5.3.2'
+
+    /* Input data backend validation */
     implementation 'org.hibernate.validator:hibernate-validator:8.0.1.Final'
+
+    /* Database */
+    implementation 'com.mysql:mysql-connector-j:8.3.0'
+
+    /* Connection Pool */
+    implementation 'com.zaxxer:HikariCP:4.0.3'
 
     /* JSTL - Jakarta Standard Tag Library */
     implementation 'javax.servlet:jstl:1.2'
