@@ -32,7 +32,7 @@
     <root level="DEBUG">
         <appender-ref ref="CONSOLE_LOG"/>
     </root>
-<!--    <logger name="com.eshoppers" level="DEBUG" additivity="false">-->
-<!--        <appender-ref ref="FILE_LOG"/>-->
-<!--    </logger>-->
+    <logger name="com.eshoppers" level="DEBUG" additivity="false">
+        <appender-ref ref="FILE_LOG"/>
+    </logger>
 </configuration>
