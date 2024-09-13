@@ -1,23 +1,16 @@
 package com.eshoppers.domain;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-public class Order {
-    private Long id;
+public class Order extends Domain {
     private Cart cart;
     private ShippingAddress shippingAddress;
-    private LocalDateTime localDateTime;
+    private LocalDate shippingDate = LocalDate.now();
     private Payment payment;
     private User user;
-    private boolean isShipped;
+    private boolean shipped;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public Cart getCart() {
         return cart;
@@ -35,12 +28,12 @@ public class Order {
         this.shippingAddress = shippingAddress;
     }
 
-    public LocalDateTime getLocalDateTime() {
-        return localDateTime;
+    public LocalDate getShippingDate() {
+        return shippingDate;
     }
 
-    public void setLocalDateTime(LocalDateTime localDateTime) {
-        this.localDateTime = localDateTime;
+    public void setShippingDate(LocalDate shippingDate) {
+        this.shippingDate = shippingDate;
     }
 
     public Payment getPayment() {
@@ -60,10 +53,10 @@ public class Order {
     }
 
     public boolean isShipped() {
-        return isShipped;
+        return shipped;
     }
 
     public void setShipped(boolean shipped) {
-        isShipped = shipped;
+        this.shipped = shipped;
     }
 }

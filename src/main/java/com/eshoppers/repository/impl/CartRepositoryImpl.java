@@ -59,6 +59,11 @@ public class CartRepositoryImpl implements CartRepository {
         return cart;
     }
 
+    @Override
+    public Optional<Cart> findById(long cartId) {
+        return Optional.empty();
+    }
+
     private boolean isOrderAlreadyPlacedWith(Set<Order> orderByUser, Cart cart) {
         return orderByUser
                 .stream()

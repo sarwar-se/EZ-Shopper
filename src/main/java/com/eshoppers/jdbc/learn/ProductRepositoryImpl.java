@@ -1,4 +1,4 @@
-package com.eshoppers.jdbc;
+package com.eshoppers.jdbc.learn;
 
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
@@ -133,21 +133,21 @@ public class ProductRepositoryImpl implements ProductRepository {
         //save new product
         productRepository.save(product);
 
-        //find all products
-        final List<Product> products = productRepository.findAll();
-        System.out.println(products);
-
-        final Product product1 = products.get(0);
-        product1.setName("Google Pixel");
-        product1.setDescription("Google Pixel 4 - Oh So Orange - 128GB - Unlocked");
-        product1.setVersion(0L);
-        product1.setPrice(BigDecimal.valueOf(699.00));
-        product1.setDateLastUpdated(LocalDateTime.now());
-
-        //update  product
-        productRepository.update(product1);
-
-        // delete product
-        productRepository.delete(2);
+//        //find all products
+//        final List<Product> products = productRepository.findAll();
+//        System.out.println(products);
+//
+//        final Product product1 = products.get(0);
+//        product1.setName("Google Pixel");
+//        product1.setDescription("Google Pixel 4 - Oh So Orange - 128GB - Unlocked");
+//        product1.setVersion(0L);
+//        product1.setPrice(BigDecimal.valueOf(699.00));
+//        product1.setDateLastUpdated(LocalDateTime.now());
+//
+//        //update  product
+//        productRepository.update(product1);
+//
+//        // delete product
+//        productRepository.delete(2);
     }
 }

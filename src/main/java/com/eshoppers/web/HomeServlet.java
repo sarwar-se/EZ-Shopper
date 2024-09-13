@@ -1,9 +1,7 @@
 package com.eshoppers.web;
 
 import com.eshoppers.dto.ProductDTO;
-import com.eshoppers.repository.impl.CartItemRepositoryImpl;
-import com.eshoppers.repository.impl.CartRepositoryImpl;
-import com.eshoppers.repository.impl.ProductRepositoryImpl;
+import com.eshoppers.repository.impl.*;
 import com.eshoppers.service.CartService;
 import com.eshoppers.service.ProductService;
 import com.eshoppers.service.impl.CartServiceImpl;
@@ -23,12 +21,12 @@ import java.util.List;
 @WebServlet("/home")
 public class HomeServlet extends HttpServlet {
     private static final Logger LOGGER = LoggerFactory.getLogger(HomeServlet.class);
-    private final ProductService productService = new ProductServiceImpl(new ProductRepositoryImpl());
+    private final ProductService productService = new ProductServiceImpl(new JdbcProductRepositoryImpl());
 
     private final CartService cartService = new CartServiceImpl(
-            new CartRepositoryImpl(),
-            new ProductRepositoryImpl(),
-            new CartItemRepositoryImpl()
+            new JdbcCartRepositoryImpl(),
+            new JdbcProductRepositoryImpl(),
+            new JdbcCartItemRepositoryImpl()
     );
 
     @Override

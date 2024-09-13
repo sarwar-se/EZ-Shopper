@@ -1,4 +1,4 @@
-package com.eshoppers.jdbc.cp;
+package com.eshoppers.jdbc.learn.cp;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
