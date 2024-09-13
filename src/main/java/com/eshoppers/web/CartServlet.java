@@ -3,9 +3,7 @@ package com.eshoppers.web;
 import com.eshoppers.domain.Cart;
 import com.eshoppers.domain.User;
 import com.eshoppers.enums.ActionType;
-import com.eshoppers.repository.impl.CartItemRepositoryImpl;
-import com.eshoppers.repository.impl.CartRepositoryImpl;
-import com.eshoppers.repository.impl.ProductRepositoryImpl;
+import com.eshoppers.repository.impl.*;
 import com.eshoppers.service.CartService;
 import com.eshoppers.service.impl.CartServiceImpl;
 import com.eshoppers.util.SecurityContext;
@@ -24,9 +22,9 @@ import java.io.IOException;
 public class CartServlet extends HttpServlet {
     private static final Logger LOGGER = LoggerFactory.getLogger(CartServlet.class);
     private final CartService cartService = new CartServiceImpl(
-            new CartRepositoryImpl(),
-            new ProductRepositoryImpl(),
-            new CartItemRepositoryImpl()
+            new JdbcCartRepositoryImpl(),
+            new JdbcProductRepositoryImpl(),
+            new JdbcCartItemRepositoryImpl()
     );
 
     @Override

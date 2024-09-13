@@ -1,7 +1,7 @@
 package com.eshoppers.web;
 
 import com.eshoppers.dto.UserDTO;
-import com.eshoppers.repository.impl.UserRepositoryImpl;
+import com.eshoppers.repository.impl.JdbcUserRepositoryImpl;
 import com.eshoppers.service.UserService;
 import com.eshoppers.service.impl.UserServiceImpl;
 import com.eshoppers.util.ValidationUtil;
@@ -19,7 +19,7 @@ import java.util.Map;
 @WebServlet("/signup")
 public class SignupServlet extends HttpServlet {
     private static final Logger LOGGER = LoggerFactory.getLogger(SignupServlet.class);
-    private UserService userService = new UserServiceImpl(new UserRepositoryImpl());
+    private UserService userService = new UserServiceImpl(new JdbcUserRepositoryImpl());
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -46,7 +46,7 @@ public class SignupServlet extends HttpServlet {
 
             LOGGER.warn("Username: {} already exists", userDTO.getUsername());
             req.getRequestDispatcher("/WEB-INF/signup.jsp").forward(req, resp);
-        } else if (userService.isNotUniqueEmail(userDTO)) {
+        } else if (userService.isNotUniqueEmail(userDTO)) { // TODO: not working
             errors.put("email", "The email already exists");
             req.setAttribute("userDto", userDTO);
             req.setAttribute("errors", errors);

@@ -1,4 +1,4 @@
-package com.eshoppers.jdbc.cp;
+package com.eshoppers.jdbc.learn.cp;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

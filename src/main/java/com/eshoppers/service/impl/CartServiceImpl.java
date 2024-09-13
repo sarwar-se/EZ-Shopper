@@ -103,6 +103,8 @@ public class CartServiceImpl implements CartService {
 
     private Cart createNewCart(User currentUser) {
         Cart cart = new Cart();
+        cart.setTotalPrice(BigDecimal.valueOf(0));
+        cart.setTotalItem(0);
         cart.setUser(currentUser);
 
         return cartRepository.save(cart);
@@ -121,16 +123,17 @@ public class CartServiceImpl implements CartService {
 
         var cartItem = cartItemOptional
                 .map(this::increaseQuantityByOne)
-                .orElseGet(() -> createNewShoppingCartItem(product));
+                .orElseGet(() -> createNewCartItem(product, cart));
 
         cart.getCartItems().add(cartItem);
     }
 
-    private CartItem createNewShoppingCartItem(Product product) {
+    private CartItem createNewCartItem(Product product, Cart cart) {
         var cartItem = new CartItem();
         cartItem.setProduct(product);
         cartItem.setQuantity(1);
         cartItem.setPrice(product.getPrice());
+        cartItem.setCart(cart);
 
         return cartItemRepository.save(cartItem);
     }
@@ -150,7 +153,7 @@ public class CartServiceImpl implements CartService {
     private Optional<CartItem> findSimilarProductInCart(Product product, Cart cart) {
         return cart.getCartItems()
                 .stream()
-                .filter(cartItem -> cartItem.getProduct().equals(product))
+                .filter(cartItem -> cartItem.getProduct().getId().equals(product.getId()))
                 .findFirst();
     }
 

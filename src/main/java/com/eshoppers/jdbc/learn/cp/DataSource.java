@@ -1,4 +1,4 @@
-package com.eshoppers.jdbc.cp;
+package com.eshoppers.jdbc.learn.cp;
 
 import java.sql.Connection;
 import java.sql.SQLException;
