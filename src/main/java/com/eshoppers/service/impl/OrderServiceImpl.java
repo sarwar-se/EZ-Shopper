@@ -10,36 +10,43 @@ import com.eshoppers.repository.OrderRepository;
 import com.eshoppers.repository.ShippingAddressRepository;
 import com.eshoppers.annotation.JDBC;
 import com.eshoppers.service.OrderService;
+import com.eshoppers.transaction.TransactionTemplate;
 import jakarta.inject.Inject;
 
 public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
     private final ShippingAddressRepository shippingAddressRepository;
     private final CartRepository cartRepository;
+    private final TransactionTemplate transactionTemplate;
 
     @Inject
     public OrderServiceImpl(@JDBC OrderRepository orderRepository,
                             @JDBC ShippingAddressRepository shippingAddressRepository,
-                            @JDBC CartRepository cartRepository) {
+                            @JDBC CartRepository cartRepository,
+                            TransactionTemplate transactionTemplate) {
         this.orderRepository = orderRepository;
         this.shippingAddressRepository = shippingAddressRepository;
         this.cartRepository = cartRepository;
+        this.transactionTemplate = transactionTemplate;
     }
 
     @Override
     public void processOrder(ShippingAddressDTO shippingAddressDTO, User currentUser) {
-        var shippingAddress = convertTo(shippingAddressDTO);
-        var savedShippingAddress = shippingAddressRepository.save(shippingAddress);
-        var cart = cartRepository.findByUser(currentUser)
-                .orElseThrow(() -> new CartItemNotFoundException("Cart not found by current user"));
+        transactionTemplate.execute(() -> {
+            var shippingAddress = convertTo(shippingAddressDTO);
+            var savedShippingAddress = shippingAddressRepository.save(shippingAddress);
+            var cart = cartRepository.findByUser(currentUser)
+                    .orElseThrow(() -> new CartItemNotFoundException("Cart not found by current user"));
 
-        var order = new Order();
-        order.setCart(cart);
-        order.setShippingAddress(savedShippingAddress);
-        order.setShipped(false);
-        order.setUser(currentUser);
+            var order = new Order();
+            order.setCart(cart);
+            order.setShippingAddress(savedShippingAddress);
+            order.setShipped(false);
+            order.setUser(currentUser);
 
-        orderRepository.save(order);
+            orderRepository.save(order);
+        });
+
     }
 
     private ShippingAddress convertTo(ShippingAddressDTO shippingAddressDTO) {

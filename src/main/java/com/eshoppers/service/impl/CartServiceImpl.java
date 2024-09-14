@@ -11,27 +11,28 @@ import com.eshoppers.repository.CartRepository;
 import com.eshoppers.repository.ProductRepository;
 import com.eshoppers.annotation.JDBC;
 import com.eshoppers.service.CartService;
+import com.eshoppers.transaction.TransactionTemplate;
 import jakarta.inject.Inject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 import java.util.Optional;
 
 public class CartServiceImpl implements CartService {
-    private static final Logger LOGGER = LoggerFactory.getLogger(CartServiceImpl.class);
 
     private final CartRepository cartRepository;
     private final ProductRepository productRepository;
     private final CartItemRepository cartItemRepository;
+    private final TransactionTemplate transactionTemplate;
 
     @Inject
     public CartServiceImpl(@JDBC CartRepository cartRepository,
                            @JDBC ProductRepository productRepository,
-                           @JDBC CartItemRepository cartItemRepository) {
+                           @JDBC CartItemRepository cartItemRepository,
+                           TransactionTemplate transactionTemplate) {
         this.cartRepository = cartRepository;
         this.productRepository = productRepository;
         this.cartItemRepository = cartItemRepository;
+        this.transactionTemplate = transactionTemplate;
     }
 
     @Override
@@ -43,18 +44,20 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public void addProductToCart(String productId, Cart cart) {
-        Product product = findProduct(productId);
-
-        addProductToCart(product, cart);
-        updateCart(cart);
+        transactionTemplate.execute(() -> {
+            Product product = findProduct(productId);
+            addProductToCart(product, cart);
+            updateCart(cart);
+        });
     }
 
     @Override
     public void removeProductToCart(String productId, Cart cart) {
-        Product product = findProduct(productId);
-        removeProductToCart(product, cart);
-        updateCart(cart);
-
+        transactionTemplate.execute(() -> {
+            Product product = findProduct(productId);
+            removeProductToCart(product, cart);
+            updateCart(cart);
+        });
     }
 
     @Override

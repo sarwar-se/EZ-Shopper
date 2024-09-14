@@ -113,8 +113,7 @@ public class JdbcCartRepositoryImpl implements CartRepository {
     public Cart update(Cart cart) {
         cart.setVersion(cart.getVersion() + 1);
         var cartToUpdate = findById(cart.getId())
-                .orElseThrow(() ->
-                        new CartNotFoundException("Shopping Cart not found by Id " + cart.getId()));
+                .orElseThrow(() -> new CartNotFoundException("Shopping Cart not found by Id " + cart.getId()));
 
         if (cart.getVersion() <= (cartToUpdate.getVersion())) {
             throw new OptimisticLockingFailureException("Shopping cart is already updated by another request");
