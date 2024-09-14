@@ -1,29 +1,28 @@
 package com.eshoppers.repository.impl;
 
+import com.eshoppers.annotation.JDBC;
 import com.eshoppers.domain.CartItem;
 import com.eshoppers.exceptions.CartNotFoundException;
 import com.eshoppers.exceptions.OptimisticLockingFailureException;
-import com.eshoppers.jdbc.ConnectionPool;
 import com.eshoppers.jdbc.JDBCTemplate;
 import com.eshoppers.repository.CartItemRepository;
 import com.eshoppers.repository.ProductRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import jakarta.inject.Inject;
 
-import javax.sql.DataSource;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
+@JDBC
 public class JdbcCartItemRepositoryImpl implements CartItemRepository {
+    private final JDBCTemplate jdbcTemplate;
+    private final ProductRepository productRepository;
 
-    private JDBCTemplate jdbcTemplate = new JDBCTemplate();
-    private ProductRepository productRepository = new JdbcProductRepositoryImpl();
+    @Inject
+    public JdbcCartItemRepositoryImpl(JDBCTemplate jdbcTemplate, @JDBC ProductRepository productRepository) {
+        this.jdbcTemplate = jdbcTemplate;
+        this.productRepository = productRepository;
+    }
+
     private static final String INSERT_CART_ITEM = """
             INSERT INTO cart_item (
                 quantity,

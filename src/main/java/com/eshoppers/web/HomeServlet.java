@@ -1,12 +1,10 @@
 package com.eshoppers.web;
 
 import com.eshoppers.dto.ProductDTO;
-import com.eshoppers.repository.impl.*;
 import com.eshoppers.service.CartService;
 import com.eshoppers.service.ProductService;
-import com.eshoppers.service.impl.CartServiceImpl;
-import com.eshoppers.service.impl.ProductServiceImpl;
 import com.eshoppers.util.SecurityContext;
+import jakarta.inject.Inject;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -21,13 +19,12 @@ import java.util.List;
 @WebServlet("/home")
 public class HomeServlet extends HttpServlet {
     private static final Logger LOGGER = LoggerFactory.getLogger(HomeServlet.class);
-    private final ProductService productService = new ProductServiceImpl(new JdbcProductRepositoryImpl());
 
-    private final CartService cartService = new CartServiceImpl(
-            new JdbcCartRepositoryImpl(),
-            new JdbcProductRepositoryImpl(),
-            new JdbcCartItemRepositoryImpl()
-    );
+    @Inject
+    private ProductService productService;
+
+    @Inject
+    private CartService cartService;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

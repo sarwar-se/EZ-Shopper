@@ -43,6 +43,9 @@ dependencies {
     implementation 'jakarta.servlet.jsp.jstl:jakarta.servlet.jsp.jstl-api:3.0.1'
     implementation 'org.glassfish.web:jakarta.servlet.jsp.jstl:3.0.1'
 
+    /* CDI: Context and Dependency Injection */
+    implementation 'org.jboss.weld.servlet:weld-servlet-core:5.1.2.Final'
+
     /* Unit Testing */
     testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")

@@ -1,13 +1,22 @@
 package com.eshoppers.repository.impl;
 
+import com.eshoppers.annotation.JDBC;
 import com.eshoppers.domain.ShippingAddress;
 import com.eshoppers.jdbc.JDBCTemplate;
 import com.eshoppers.repository.ShippingAddressRepository;
+import jakarta.inject.Inject;
 
 import java.util.Optional;
 
+@JDBC
 public class JdbcShippingAddressRepositoryImpl implements ShippingAddressRepository {
-    private JDBCTemplate jdbcTemplate = new JDBCTemplate();
+
+    private final JDBCTemplate jdbcTemplate;
+
+    @Inject
+    public JdbcShippingAddressRepositoryImpl(JDBCTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
     private final static String INSERT_SHIPPING_ADDRESS = """
             INSERT INTO shipping_address (

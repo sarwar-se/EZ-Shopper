@@ -1,5 +1,6 @@
 package com.eshoppers.repository.impl;
 
+import com.eshoppers.annotation.Local;
 import com.eshoppers.domain.ShippingAddress;
 import com.eshoppers.repository.ShippingAddressRepository;
 
@@ -7,6 +8,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 
+@Local
 public class ShippingAddressRepositoryImpl implements ShippingAddressRepository {
     private static final Set<ShippingAddress> SHIPPING_ADDRESSES = new CopyOnWriteArraySet<>();
 

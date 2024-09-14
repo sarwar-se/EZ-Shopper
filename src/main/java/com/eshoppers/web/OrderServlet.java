@@ -1,13 +1,11 @@
 package com.eshoppers.web;
 
 import com.eshoppers.dto.ShippingAddressDTO;
-import com.eshoppers.repository.impl.*;
 import com.eshoppers.service.CartService;
 import com.eshoppers.service.OrderService;
-import com.eshoppers.service.impl.CartServiceImpl;
-import com.eshoppers.service.impl.OrderServiceImpl;
 import com.eshoppers.util.SecurityContext;
 import com.eshoppers.util.ValidationUtil;
+import jakarta.inject.Inject;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -23,17 +21,11 @@ import java.util.List;
 public class OrderServlet extends HttpServlet {
     private static final Logger LOGGER = LoggerFactory.getLogger(OrderServlet.class);
 
-    private final CartService cartService = new CartServiceImpl(
-            new JdbcCartRepositoryImpl(),
-            new JdbcProductRepositoryImpl(),
-            new JdbcCartItemRepositoryImpl()
-    );
+    @Inject
+    private CartService cartService;
 
-    private final OrderService orderService = new OrderServiceImpl(
-            new JdbcOrderRepositoryImpl(),
-            new JdbcShippingAddressRepositoryImpl(),
-            new JdbcCartRepositoryImpl()
-    );
+    @Inject
+    private OrderService orderService;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

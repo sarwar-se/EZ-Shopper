@@ -1,9 +1,9 @@
 package com.eshoppers.repository.impl;
 
+import com.eshoppers.annotation.JDBC;
 import com.eshoppers.domain.User;
-import com.eshoppers.jdbc.ConnectionPool;
-import com.eshoppers.jdbc.JDBCTemplate;
 import com.eshoppers.repository.UserRepository;
+import jakarta.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,36 +15,37 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@JDBC
 public class JdbcUserRepositoryImpl implements UserRepository {
     private static final Logger LOGGER = LoggerFactory.getLogger(JdbcUserRepositoryImpl.class);
 
-    private final DataSource dataSource = ConnectionPool.getInstance().getDataSource();
+    private final DataSource dataSource;
 
     private final static String SAVE_USER = """
             INSERT INTO user
-            (username,
-            password,
-            version,
-            date_created,
-            date_last_updated,
-            email,
-            first_name,
-            last_name)
+                (username,
+                password,
+                version,
+                date_created,
+                date_last_updated,
+                email,
+                first_name,
+                last_name)
             VALUES (?,?,?,?,?,?,?,?)
             """;
 
     private final static String SELECT_BY_USERNAME = """
-              SELECT
-                  id,
-                  username,
-                  password,
-                  version,
-                  date_created,
-                  date_last_updated,
-                  email,
-                  first_name,
-                  last_name
-              FROM user WHERE username = ?
+               SELECT
+                   id,
+                   username,
+                   password,
+                   version,
+                   date_created,
+                   date_last_updated,
+                   email,
+                   first_name,
+                   last_name
+               FROM user WHERE username = ?
             """;
 
     private final static String SELECT_BY_EMAIL = """
@@ -60,6 +61,11 @@ public class JdbcUserRepositoryImpl implements UserRepository {
                   last_name
               FROM user WHERE email = ?
             """;
+
+    @Inject
+    public JdbcUserRepositoryImpl(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
 
     @Override
     public void save(User user) {

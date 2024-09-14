@@ -1,19 +1,31 @@
 package com.eshoppers.repository.impl;
 
+import com.eshoppers.annotation.JDBC;
 import com.eshoppers.domain.Order;
 import com.eshoppers.domain.User;
 import com.eshoppers.jdbc.JDBCTemplate;
 import com.eshoppers.repository.CartRepository;
 import com.eshoppers.repository.OrderRepository;
 import com.eshoppers.repository.ShippingAddressRepository;
+import jakarta.inject.Inject;
 
 import java.util.HashSet;
 import java.util.Set;
 
+@JDBC
 public class JdbcOrderRepositoryImpl implements OrderRepository {
-    private JDBCTemplate jdbcTemplate = new JDBCTemplate();
-    private CartRepository cartRepository = new JdbcCartRepositoryImpl();
-    private ShippingAddressRepository shippingAddressRepository = new JdbcShippingAddressRepositoryImpl();
+    private final JDBCTemplate jdbcTemplate;
+    private final CartRepository cartRepository;
+    private final ShippingAddressRepository shippingAddressRepository;
+
+    @Inject
+    public JdbcOrderRepositoryImpl(JDBCTemplate jdbcTemplate,
+                                   @JDBC CartRepository cartRepository,
+                                   @JDBC ShippingAddressRepository shippingAddressRepository) {
+        this.jdbcTemplate = jdbcTemplate;
+        this.cartRepository = cartRepository;
+        this.shippingAddressRepository = shippingAddressRepository;
+    }
 
     public static final String FIND_ORDER_BY_USER = """
             SELECT

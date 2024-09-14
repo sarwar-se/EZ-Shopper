@@ -2,6 +2,7 @@ package com.eshoppers.jdbc;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import jakarta.enterprise.inject.Produces;
 
 import javax.sql.DataSource;
 import java.util.ResourceBundle;
@@ -16,6 +17,7 @@ public class ConnectionPool {
         return INSTANCE;
     }
 
+    @Produces
     public DataSource getDataSource() {
         var dbProp = ResourceBundle.getBundle("db");
 

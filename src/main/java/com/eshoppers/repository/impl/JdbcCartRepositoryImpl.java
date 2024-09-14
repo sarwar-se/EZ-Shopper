@@ -1,5 +1,6 @@
 package com.eshoppers.repository.impl;
 
+import com.eshoppers.annotation.JDBC;
 import com.eshoppers.domain.Cart;
 import com.eshoppers.domain.CartItem;
 import com.eshoppers.domain.User;
@@ -8,6 +9,7 @@ import com.eshoppers.exceptions.OptimisticLockingFailureException;
 import com.eshoppers.jdbc.JDBCTemplate;
 import com.eshoppers.repository.CartRepository;
 import com.eshoppers.repository.ProductRepository;
+import jakarta.inject.Inject;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -15,9 +17,16 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+@JDBC
 public class JdbcCartRepositoryImpl implements CartRepository {
-    private JDBCTemplate jdbcTemplate = new JDBCTemplate();
-    private ProductRepository productRepository = new JdbcProductRepositoryImpl();
+    private final JDBCTemplate jdbcTemplate;
+    private final ProductRepository productRepository;
+
+    @Inject
+    public JdbcCartRepositoryImpl(JDBCTemplate jdbcTemplate, @JDBC ProductRepository productRepository) {
+        this.jdbcTemplate = jdbcTemplate;
+        this.productRepository = productRepository;
+    }
 
     private static final String INSERT_CART = """
             INSERT INTO cart (
