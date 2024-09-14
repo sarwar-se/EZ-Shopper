@@ -1,10 +1,9 @@
 package com.eshoppers.web;
 
 import com.eshoppers.dto.UserDTO;
-import com.eshoppers.repository.impl.JdbcUserRepositoryImpl;
 import com.eshoppers.service.UserService;
-import com.eshoppers.service.impl.UserServiceImpl;
 import com.eshoppers.util.ValidationUtil;
+import jakarta.inject.Inject;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -19,7 +18,9 @@ import java.util.Map;
 @WebServlet("/signup")
 public class SignupServlet extends HttpServlet {
     private static final Logger LOGGER = LoggerFactory.getLogger(SignupServlet.class);
-    private UserService userService = new UserServiceImpl(new JdbcUserRepositoryImpl());
+
+    @Inject
+    private UserService userService;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

@@ -8,14 +8,19 @@ import com.eshoppers.exceptions.CartItemNotFoundException;
 import com.eshoppers.repository.CartRepository;
 import com.eshoppers.repository.OrderRepository;
 import com.eshoppers.repository.ShippingAddressRepository;
+import com.eshoppers.annotation.JDBC;
 import com.eshoppers.service.OrderService;
+import jakarta.inject.Inject;
 
 public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
     private final ShippingAddressRepository shippingAddressRepository;
     private final CartRepository cartRepository;
 
-    public OrderServiceImpl(OrderRepository orderRepository, ShippingAddressRepository shippingAddressRepository, CartRepository cartRepository) {
+    @Inject
+    public OrderServiceImpl(@JDBC OrderRepository orderRepository,
+                            @JDBC ShippingAddressRepository shippingAddressRepository,
+                            @JDBC CartRepository cartRepository) {
         this.orderRepository = orderRepository;
         this.shippingAddressRepository = shippingAddressRepository;
         this.cartRepository = cartRepository;

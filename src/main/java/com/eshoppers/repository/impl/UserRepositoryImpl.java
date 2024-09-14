@@ -1,5 +1,6 @@
 package com.eshoppers.repository.impl;
 
+import com.eshoppers.annotation.Local;
 import com.eshoppers.domain.User;
 import com.eshoppers.repository.UserRepository;
 
@@ -8,6 +9,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 
+@Local
 public class UserRepositoryImpl implements UserRepository {
     private static final Set<User> USERS = new CopyOnWriteArraySet<>();
 

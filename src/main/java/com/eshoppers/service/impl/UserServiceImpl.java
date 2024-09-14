@@ -5,17 +5,22 @@ import com.eshoppers.dto.LoginDTO;
 import com.eshoppers.dto.UserDTO;
 import com.eshoppers.exceptions.UserNotFoundException;
 import com.eshoppers.repository.UserRepository;
+import com.eshoppers.annotation.JDBC;
+import com.eshoppers.annotation.Sha256;
+import com.eshoppers.security.PasswordEncryption;
 import com.eshoppers.service.UserService;
-
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+import jakarta.inject.Inject;
 
 public class UserServiceImpl implements UserService {
+
     private final UserRepository userRepository;
 
-    public UserServiceImpl(UserRepository userRepository) {
+    private final PasswordEncryption passwordEncryption;
+
+    @Inject
+    public UserServiceImpl(@JDBC UserRepository userRepository, @Sha256 PasswordEncryption passwordEncryption) {
         this.userRepository = userRepository;
+        this.passwordEncryption = passwordEncryption;
     }
 
     @Override
@@ -23,7 +28,7 @@ public class UserServiceImpl implements UserService {
         User user = new User();
         user.setUsername(userDTO.getUsername());
         user.setEmail(userDTO.getEmail());
-        user.setPassword(encryptPassword(userDTO.getPassword()));
+        user.setPassword(passwordEncryption.encrypt(userDTO.getPassword()));
         user.setFirstName(userDTO.getFirstName());
         user.setLastName(userDTO.getLastName());
 
@@ -45,34 +50,11 @@ public class UserServiceImpl implements UserService {
         var user = userRepository.findByUsername(loginDTO.getUsername())
                 .orElseThrow(() -> new UserNotFoundException("User not found by " + loginDTO.getUsername()));
 
-        var encryptedPassword = encryptPassword(loginDTO.getPassword());
+        var encryptedPassword = passwordEncryption.encrypt(loginDTO.getPassword());
         if (user.getPassword().equals(encryptedPassword)) {
             return user;
         } else {
             throw new UserNotFoundException("Incorrect username password");
         }
-    }
-
-    private String encryptPassword(String password) {
-        try {
-            var digest = MessageDigest.getInstance("SHA-256");
-            var bytes = digest.digest(password.getBytes(StandardCharsets.UTF_8));
-
-            return bytesToHex(bytes);
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException("Unable to encrypt password", e);
-        }
-    }
-
-    private static String bytesToHex(byte[] hash) {
-        StringBuilder hexString = new StringBuilder();
-        for (byte b : hash) {
-            String hex = Integer.toHexString(0xff & b);
-            if (hex.length() == 1) {
-                hexString.append('0');
-            }
-            hexString.append(hex);
-        }
-        return hexString.toString();
     }
 }

@@ -1,8 +1,9 @@
 package com.eshoppers.repository.impl;
 
+import com.eshoppers.annotation.JDBC;
 import com.eshoppers.domain.Product;
-import com.eshoppers.jdbc.ConnectionPool;
 import com.eshoppers.repository.ProductRepository;
+import jakarta.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,14 +15,19 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+@JDBC
 public class JdbcProductRepositoryImpl implements ProductRepository {
     private static final Logger LOGGER = LoggerFactory.getLogger(JdbcProductRepositoryImpl.class);
 
-    private final DataSource dataSource = ConnectionPool.getInstance().getDataSource();
+    private final DataSource dataSource;
 
     private static final String SELECT_ALL_PRODUCTS = "select * from product";
     private static final String SELECT_PRODUCT_BY_ID = "select * from product where id = ?";
 
+    @Inject
+    public JdbcProductRepositoryImpl(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
 
     @Override
     public List<Product> findAllProducts() {

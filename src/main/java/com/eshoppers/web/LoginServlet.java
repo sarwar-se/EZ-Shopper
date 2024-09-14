@@ -3,11 +3,10 @@ package com.eshoppers.web;
 import com.eshoppers.domain.User;
 import com.eshoppers.dto.LoginDTO;
 import com.eshoppers.exceptions.UserNotFoundException;
-import com.eshoppers.repository.impl.JdbcUserRepositoryImpl;
 import com.eshoppers.service.UserService;
-import com.eshoppers.service.impl.UserServiceImpl;
 import com.eshoppers.util.SecurityContext;
 import com.eshoppers.util.ValidationUtil;
+import jakarta.inject.Inject;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -21,7 +20,9 @@ import java.io.IOException;
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
     private static final Logger LOGGER = LoggerFactory.getLogger(LoginServlet.class);
-    private UserService userService = new UserServiceImpl(new JdbcUserRepositoryImpl());
+
+    @Inject
+    private UserService userService;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

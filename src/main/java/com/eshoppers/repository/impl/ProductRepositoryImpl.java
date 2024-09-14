@@ -1,5 +1,6 @@
 package com.eshoppers.repository.impl;
 
+import com.eshoppers.annotation.Local;
 import com.eshoppers.domain.Product;
 import com.eshoppers.repository.ProductRepository;
 
@@ -7,6 +8,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
+@Local
 public class ProductRepositoryImpl implements ProductRepository {
 
     private static final List<Product> ALL_PRODUCTS = List.of(

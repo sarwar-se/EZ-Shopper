@@ -1,5 +1,6 @@
 package com.eshoppers.jdbc;
 
+import jakarta.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,7 +15,8 @@ import java.util.List;
 public class JDBCTemplate {
     private static final Logger LOGGER = LoggerFactory.getLogger(JDBCTemplate.class);
 
-    private final DataSource dataSource = ConnectionPool.getInstance().getDataSource();
+    @Inject
+    private DataSource dataSource;
 
     public void updateQuery(String query, Object... parameters) {
         try (var connection = dataSource.getConnection(); var statement = connection.prepareStatement(query)) {

@@ -3,11 +3,10 @@ package com.eshoppers.web;
 import com.eshoppers.domain.Cart;
 import com.eshoppers.domain.User;
 import com.eshoppers.enums.ActionType;
-import com.eshoppers.repository.impl.*;
 import com.eshoppers.service.CartService;
-import com.eshoppers.service.impl.CartServiceImpl;
 import com.eshoppers.util.SecurityContext;
 import com.eshoppers.util.StringUtil;
+import jakarta.inject.Inject;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -21,11 +20,9 @@ import java.io.IOException;
 @WebServlet("/add-to-cart")
 public class CartServlet extends HttpServlet {
     private static final Logger LOGGER = LoggerFactory.getLogger(CartServlet.class);
-    private final CartService cartService = new CartServiceImpl(
-            new JdbcCartRepositoryImpl(),
-            new JdbcProductRepositoryImpl(),
-            new JdbcCartItemRepositoryImpl()
-    );
+
+    @Inject
+    private CartService cartService;
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

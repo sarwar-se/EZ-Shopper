@@ -1,5 +1,6 @@
 package com.eshoppers.repository.impl;
 
+import com.eshoppers.annotation.Local;
 import com.eshoppers.domain.Cart;
 import com.eshoppers.domain.Order;
 import com.eshoppers.domain.User;
@@ -9,6 +10,7 @@ import com.eshoppers.repository.OrderRepository;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
+@Local
 public class CartRepositoryImpl implements CartRepository {
     private static final Map<User, LinkedHashSet<Cart>> CARTS = new ConcurrentHashMap<>();
     private final OrderRepository orderRepository = new OrderRepositoryImpl();

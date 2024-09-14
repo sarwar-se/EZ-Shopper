@@ -9,7 +9,9 @@ import com.eshoppers.exceptions.ProductNotFoundException;
 import com.eshoppers.repository.CartItemRepository;
 import com.eshoppers.repository.CartRepository;
 import com.eshoppers.repository.ProductRepository;
+import com.eshoppers.annotation.JDBC;
 import com.eshoppers.service.CartService;
+import jakarta.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,7 +25,10 @@ public class CartServiceImpl implements CartService {
     private final ProductRepository productRepository;
     private final CartItemRepository cartItemRepository;
 
-    public CartServiceImpl(CartRepository cartRepository, ProductRepository productRepository, CartItemRepository cartItemRepository) {
+    @Inject
+    public CartServiceImpl(@JDBC CartRepository cartRepository,
+                           @JDBC ProductRepository productRepository,
+                           @JDBC CartItemRepository cartItemRepository) {
         this.cartRepository = cartRepository;
         this.productRepository = productRepository;
         this.cartItemRepository = cartItemRepository;

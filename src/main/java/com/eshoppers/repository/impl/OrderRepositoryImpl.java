@@ -1,5 +1,6 @@
 package com.eshoppers.repository.impl;
 
+import com.eshoppers.annotation.Local;
 import com.eshoppers.domain.Order;
 import com.eshoppers.domain.User;
 import com.eshoppers.repository.OrderRepository;
@@ -8,6 +9,7 @@ import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.stream.Collectors;
 
+@Local
 public class OrderRepositoryImpl implements OrderRepository {
     private static final Set<Order> ORDERS = new CopyOnWriteArraySet<>();
 
