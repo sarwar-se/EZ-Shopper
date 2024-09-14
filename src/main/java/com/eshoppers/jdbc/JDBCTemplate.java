@@ -1,10 +1,10 @@
 package com.eshoppers.jdbc;
 
+import com.eshoppers.transaction.ConnectionHolder;
 import jakarta.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.sql.DataSource;
 import java.math.BigDecimal;
 import java.sql.*;
 import java.time.LocalDate;
@@ -16,25 +16,23 @@ public class JDBCTemplate {
     private static final Logger LOGGER = LoggerFactory.getLogger(JDBCTemplate.class);
 
     @Inject
-    private DataSource dataSource;
+    private ConnectionHolder connectionHolder;
 
     public void updateQuery(String query, Object... parameters) {
-        try (var connection = dataSource.getConnection(); var statement = connection.prepareStatement(query)) {
-
+        var connection = connectionHolder.getConnection();
+        try (var statement = connection.prepareStatement(query)) {
             addParameters(statement, parameters);
-
             statement.executeUpdate();
         } catch (SQLException e) {
             LOGGER.info("Unable to execute update", e);
-            throw new RuntimeException("Unable to execute query for result", e);
+            throw new RuntimeException("Unable to execute update query", e);
         }
     }
 
     public void query(String query, ThrowableConsumer<ResultSet> consumer) {
-        try (var connection = dataSource.getConnection(); var statement = connection.prepareStatement(query)) {
-
+        var connection = connectionHolder.getConnection();
+        try (var statement = connection.prepareStatement(query)) {
             consumer.accept(statement.executeQuery());
-
         } catch (SQLException e) {
             LOGGER.info("Unable to execute query for result", e);
             throw new RuntimeException("Unable to execute query for result", e);
@@ -42,20 +40,20 @@ public class JDBCTemplate {
     }
 
     public long executeInsertQuery(String query, Object... parameters) {
-        try (var connection = dataSource.getConnection();
-             var preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
-
+        var connection = connectionHolder.getConnection();
+        try (var preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
             addParameters(preparedStatement, parameters);
             final int affectedRows = preparedStatement.executeUpdate();
 
             if (affectedRows == 0) {
-                throw new SQLException("Creating user failed, no rows affected.");
+                throw new SQLException("Creating failed, no rows affected.");
             }
+
             try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
                     return generatedKeys.getLong(1);
                 } else {
-                    throw new SQLException("Creating user failed, no ID obtained.");
+                    throw new SQLException("Creating failed, No ID obtained.");
                 }
             }
 
@@ -66,8 +64,8 @@ public class JDBCTemplate {
     }
 
     public <E> List<E> queryForObject(String query, Object param, ObjectRowMapper<E> objectRowMapper) {
-        try (var connection = dataSource.getConnection(); var statement = connection.prepareStatement(query)) {
-
+        var connection = connectionHolder.getConnection();
+        try (var statement = connection.prepareStatement(query)) {
             addParameters(statement, new Object[]{param});
             var resultSet = statement.executeQuery();
 
@@ -84,8 +82,8 @@ public class JDBCTemplate {
     }
 
     public <E> List<E> queryForObject(String query, ObjectRowMapper<E> objectRowMapper) {
-
-        try (var connection = dataSource.getConnection(); var statement = connection.prepareStatement(query)) {
+        var connection = connectionHolder.getConnection();
+        try (var statement = connection.prepareStatement(query)) {
 
             var resultSet = statement.executeQuery(query);
             List<E> listOfE = new ArrayList<>();
@@ -115,6 +113,8 @@ public class JDBCTemplate {
                 preparedStatement.setFloat(idx, (Float) parameter);
             } else if (parameter instanceof Double) {
                 preparedStatement.setDouble(idx, (Double) parameter);
+            } else if (parameter instanceof Timestamp) {
+                preparedStatement.setTimestamp(idx, Timestamp.valueOf(((Timestamp) parameter).toLocalDateTime()));
             } else if (parameter instanceof LocalDateTime) {
                 preparedStatement.setTimestamp(idx, Timestamp.valueOf(((LocalDateTime) parameter)));
             } else if (parameter instanceof LocalDate) {
@@ -131,9 +131,9 @@ public class JDBCTemplate {
     }
 
     public void deleteById(String query, Long id) {
-        try (var connection = dataSource.getConnection(); var statement = connection.prepareStatement(query)) {
+        var connection = connectionHolder.getConnection();
+        try (var statement = connection.prepareStatement(query)) {
             statement.setLong(1, id);
-
             statement.execute();
         } catch (SQLException e) {
             LOGGER.error("Unable to execute delete by id: {}", id, e);

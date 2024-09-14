@@ -2,24 +2,17 @@ package com.eshoppers.repository.impl;
 
 import com.eshoppers.annotation.JDBC;
 import com.eshoppers.domain.User;
+import com.eshoppers.jdbc.JDBCTemplate;
 import com.eshoppers.repository.UserRepository;
 import jakarta.inject.Inject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 @JDBC
 public class JdbcUserRepositoryImpl implements UserRepository {
-    private static final Logger LOGGER = LoggerFactory.getLogger(JdbcUserRepositoryImpl.class);
-
-    private final DataSource dataSource;
 
     private final static String SAVE_USER = """
             INSERT INTO user
@@ -62,76 +55,54 @@ public class JdbcUserRepositoryImpl implements UserRepository {
               FROM user WHERE email = ?
             """;
 
+    private final JDBCTemplate jdbcTemplate;
+
     @Inject
-    public JdbcUserRepositoryImpl(DataSource dataSource) {
-        this.dataSource = dataSource;
+    public JdbcUserRepositoryImpl(JDBCTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
     }
 
     @Override
     public void save(User user) {
-        try (var connection = dataSource.getConnection();
-             var preparedStatement = connection.prepareStatement(SAVE_USER)) {
-
-            preparedStatement.setString(1, user.getUsername());
-            preparedStatement.setString(2, user.getPassword());
-            preparedStatement.setLong(3, 0L);
-            preparedStatement.setTimestamp(4, Timestamp.valueOf(user.getDateCreated()));
-            preparedStatement.setTimestamp(5, Timestamp.valueOf(user.getDateLastUpdated()));
-            preparedStatement.setString(6, user.getEmail());
-            preparedStatement.setString(7, user.getFirstName());
-            preparedStatement.setString(8, user.getLastName());
-
-            preparedStatement.execute();
-
-        } catch (SQLException e) {
-            LOGGER.error("Unable to save user", e);
-            throw new RuntimeException("Unable to save user", e);
-        }
+        jdbcTemplate.executeInsertQuery(SAVE_USER,
+                user.getUsername(),
+                user.getPassword(),
+                0L,
+                Timestamp.valueOf(user.getDateCreated()),
+                Timestamp.valueOf(user.getDateLastUpdated()),
+                user.getEmail(),
+                user.getFirstName(),
+                user.getLastName()
+        );
     }
 
     @Override
     public Optional<User> findByUsername(String username) {
-        try (var connection = dataSource.getConnection();
-             var preparedStatement = connection.prepareStatement(SELECT_BY_USERNAME)) {
+        var users = jdbcTemplate.queryForObject(SELECT_BY_USERNAME, username, this::extractUser);
 
-            preparedStatement.setString(1, username);
-            var resultSet = preparedStatement.executeQuery();
-            List<User> users = extractUser(resultSet);
-            if (users.size() > 0) {
-                return Optional.of(users.get(0));
-            }
-        } catch (SQLException e) {
-            LOGGER.error("", e);
-        }
-
-        return Optional.empty();
+        return users.size() > 0 ? Optional.of(users.get(0)) : Optional.empty();
     }
 
     @Override
     public Optional<User> findByEmail(String email) {
-        return Optional.empty();
+        var users = jdbcTemplate.queryForObject(SELECT_BY_EMAIL, email, this::extractUser);
+
+        return users.size() > 0 ? Optional.of(users.get(0)) : Optional.empty();
     }
 
-    private List<User> extractUser(ResultSet resultSet) throws SQLException {
-        List<User> users = new ArrayList<>();
+    private User extractUser(ResultSet resultSet) throws SQLException {
+        var user = new User();
 
-        while (resultSet.next()) {
-            var user = new User();
+        user.setId(resultSet.getLong("id"));
+        user.setVersion(resultSet.getLong("version"));
+        user.setUsername(resultSet.getString("username"));
+        user.setPassword(resultSet.getString("password"));
+        user.setDateCreated(resultSet.getTimestamp("date_created").toLocalDateTime());
+        user.setDateLastUpdated(resultSet.getTimestamp("date_last_updated").toLocalDateTime());
+        user.setFirstName(resultSet.getString("first_name"));
+        user.setLastName(resultSet.getString("last_name"));
+        user.setEmail(resultSet.getString("email"));
 
-            user.setId(resultSet.getLong("id"));
-            user.setVersion(resultSet.getLong("version"));
-            user.setUsername(resultSet.getString("username"));
-            user.setPassword(resultSet.getString("password"));
-            user.setDateCreated(resultSet.getTimestamp("date_created").toLocalDateTime());
-            user.setDateLastUpdated(resultSet.getTimestamp("date_last_updated").toLocalDateTime());
-            user.setFirstName(resultSet.getString("first_name"));
-            user.setLastName(resultSet.getString("last_name"));
-            user.setEmail(resultSet.getString("email"));
-
-            users.add(user);
-        }
-
-
-        return users;
+        return user;
     }
 }

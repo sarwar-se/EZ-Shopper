@@ -29,7 +29,7 @@
                 <c:choose>
                     <c:when test="${sec:isAuthenticated(pageContext.request)}">
                         <a class="nav-link" href="#" onclick="logout()">
-                            Logout [${sec:getCurrentUser(pageContext.request).firstName}]
+                            Logout [${sec:getCurrentUser(pageContext.request).username}]
                             <form style="visibility: hidden" id="logoutForm" method="post"
                                   action="<c:url value="/logout" />">
                             </form>

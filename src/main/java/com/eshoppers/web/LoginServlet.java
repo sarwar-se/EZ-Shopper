@@ -49,17 +49,17 @@ public class LoginServlet extends HttpServlet {
 
             req.setAttribute("errors", errors);
             req.getRequestDispatcher("/WEB-INF/login.jsp").forward(req, resp);
-        }
-
-        try {
-            login(loginDTO, req);
-            LOGGER.info("Login successful, redirecting to home page");
-            resp.sendRedirect("/home");
-        } catch (UserNotFoundException e) {
-            LOGGER.error("Incorrect username/password", e);
-            errors.put("username", "Incorrect username/password");
-            req.setAttribute("errors", errors);
-            req.getRequestDispatcher("/WEB-INF/login.jsp").forward(req, resp);
+        } else {
+            try {
+                login(loginDTO, req);
+                LOGGER.info("Login successful, redirecting to home page");
+                resp.sendRedirect("/home");
+            } catch (UserNotFoundException e) {
+                LOGGER.error("Incorrect username/password", e);
+                errors.put("username", "Incorrect username/password");
+                req.setAttribute("errors", errors);
+                req.getRequestDispatcher("/WEB-INF/login.jsp").forward(req, resp);
+            }
         }
     }
 

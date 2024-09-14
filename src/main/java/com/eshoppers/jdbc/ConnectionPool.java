@@ -8,14 +8,6 @@ import javax.sql.DataSource;
 import java.util.ResourceBundle;
 
 public class ConnectionPool {
-    private static final ConnectionPool INSTANCE = new ConnectionPool();
-
-    private ConnectionPool() {
-    }
-
-    public static ConnectionPool getInstance() {
-        return INSTANCE;
-    }
 
     @Produces
     public DataSource getDataSource() {

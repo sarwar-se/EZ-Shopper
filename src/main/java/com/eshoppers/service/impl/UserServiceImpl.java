@@ -9,23 +9,28 @@ import com.eshoppers.annotation.JDBC;
 import com.eshoppers.annotation.Sha256;
 import com.eshoppers.security.PasswordEncryption;
 import com.eshoppers.service.UserService;
+import com.eshoppers.transaction.TransactionTemplate;
 import jakarta.inject.Inject;
 
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-
     private final PasswordEncryption passwordEncryption;
+    private final TransactionTemplate transactionTemplate;
 
     @Inject
-    public UserServiceImpl(@JDBC UserRepository userRepository, @Sha256 PasswordEncryption passwordEncryption) {
+    public UserServiceImpl(@JDBC UserRepository userRepository,
+                           @Sha256 PasswordEncryption passwordEncryption,
+                           TransactionTemplate transactionTemplate) {
         this.userRepository = userRepository;
         this.passwordEncryption = passwordEncryption;
+        this.transactionTemplate = transactionTemplate;
     }
 
     @Override
     public void saveUser(UserDTO userDTO) {
         User user = new User();
+
         user.setUsername(userDTO.getUsername());
         user.setEmail(userDTO.getEmail());
         user.setPassword(passwordEncryption.encrypt(userDTO.getPassword()));
