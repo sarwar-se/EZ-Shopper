@@ -3,7 +3,7 @@ package com.eshoppers.web;
 import com.eshoppers.dto.ProductDTO;
 import com.eshoppers.service.CartService;
 import com.eshoppers.service.ProductService;
-import com.eshoppers.util.SecurityContext;
+import com.eshoppers.security.SecurityContext;
 import jakarta.inject.Inject;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;

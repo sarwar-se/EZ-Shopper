@@ -4,7 +4,7 @@ import com.eshoppers.domain.Cart;
 import com.eshoppers.domain.User;
 import com.eshoppers.enums.ActionType;
 import com.eshoppers.service.CartService;
-import com.eshoppers.util.SecurityContext;
+import com.eshoppers.security.SecurityContext;
 import com.eshoppers.util.StringUtil;
 import jakarta.inject.Inject;
 import jakarta.servlet.ServletException;

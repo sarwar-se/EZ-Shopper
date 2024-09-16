@@ -1,6 +1,6 @@
 package com.eshoppers.dto;
 
-import com.eshoppers.util.PasswordEqual;
+import com.eshoppers.annotation.PasswordEqual;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
