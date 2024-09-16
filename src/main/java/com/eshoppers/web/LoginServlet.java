@@ -4,7 +4,7 @@ import com.eshoppers.domain.User;
 import com.eshoppers.dto.LoginDTO;
 import com.eshoppers.exceptions.UserNotFoundException;
 import com.eshoppers.service.UserService;
-import com.eshoppers.util.SecurityContext;
+import com.eshoppers.security.SecurityContext;
 import com.eshoppers.util.ValidationUtil;
 import jakarta.inject.Inject;
 import jakarta.servlet.ServletException;

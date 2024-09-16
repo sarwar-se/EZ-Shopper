@@ -21,7 +21,8 @@ create table user
     date_last_updated timestamp    null,
     email             varchar(100) not null,
     first_name        varchar(30)  not null,
-    last_name         varchar(30)  not null
+    last_name         varchar(30)  not null,
+    user_role         varchar(16)  not null
 );
 
 create table cart

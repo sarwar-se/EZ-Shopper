@@ -1,6 +1,6 @@
 package com.eshoppers.web;
 
-import com.eshoppers.util.SecurityContext;
+import com.eshoppers.security.SecurityContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;

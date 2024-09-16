@@ -1,6 +1,6 @@
 package com.eshoppers.filter;
 
-import com.eshoppers.util.SecurityContext;
+import com.eshoppers.security.SecurityContext;
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;

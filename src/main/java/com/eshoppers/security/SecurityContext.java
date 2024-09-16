@@ -1,4 +1,4 @@
-package com.eshoppers.util;
+package com.eshoppers.security;
 
 import com.eshoppers.domain.User;
 import jakarta.servlet.http.HttpServletRequest;

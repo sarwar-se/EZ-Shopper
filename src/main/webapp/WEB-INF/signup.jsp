@@ -8,7 +8,7 @@
 <%@ include file="includes/header.jsp" %>
 <%@ include file="includes/navigation.jsp" %>
 
-<div class="container">
+<div class="container w-25">
     <h2>Sign Up</h2>
     <hr class="mb-4">
     <form class="form-horizontal" role="form"
@@ -84,7 +84,15 @@
                 <small class="text-danger">${errors.lastName}</small>
             </c:if>
         </div>
-        <hr class="mb-4">
+        <hr class="mb-2">
+        <div class="mb-2">
+            <span>
+                Already have a user account?
+                <a class="btn-link" href="<c:url value="/login"/>">
+                    LogIn
+                </a>
+            </span>
+        </div>
         <div class="form-group">
             <button class="btn btn-primary btn-lg" type="submit">
                 Signup

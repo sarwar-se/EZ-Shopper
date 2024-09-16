@@ -8,7 +8,7 @@
 <%@ include file="includes/header.jsp" %>
 <%@ include file="includes/navigation.jsp" %>
 
-<div class="container">
+<div class="container w-25">
     <div>
         <c:if test="${message != null}">
             <div class="alert alert-success">
@@ -42,7 +42,7 @@
                 <small class="text-danger">${errors.password}</small>
             </c:if>
         </div>
-        <hr class="mb-4">
+        <hr class="mb-2">
         <div class="mb-2">
             <span>
                 Don't have a user account?

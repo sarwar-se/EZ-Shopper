@@ -1,4 +1,4 @@
-package com.eshoppers.util;
+package com.eshoppers.annotation;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;

@@ -1,5 +1,7 @@
 package com.eshoppers.domain;
 
+import com.eshoppers.enums.UserRole;
+
 import java.util.Objects;
 
 public class User extends Domain {
@@ -8,6 +10,7 @@ public class User extends Domain {
     private String password;
     private String firstName;
     private String lastName;
+    private UserRole userRole;
 
     public String getUsername() {
         return username;
@@ -47,6 +50,14 @@ public class User extends Domain {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public UserRole getUserRole() {
+        return userRole;
+    }
+
+    public void setUserRole(UserRole userRole) {
+        this.userRole = userRole;
     }
 
     @Override

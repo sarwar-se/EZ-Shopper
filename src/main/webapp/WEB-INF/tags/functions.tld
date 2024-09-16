@@ -8,14 +8,14 @@
     <uri>http://eshoppers.com/functions</uri>
     <function>
         <name>getCurrentUser</name>
-        <function-class>com.eshoppers.util.SecurityContext</function-class>
+        <function-class>com.eshoppers.security.SecurityContext</function-class>
         <function-signature>
             com.eshoppers.domain.User getCurrentUser(jakarta.servlet.http.HttpServletRequest)
         </function-signature>
     </function>
     <function>
         <name>isAuthenticated</name>
-        <function-class>com.eshoppers.util.SecurityContext</function-class>
+        <function-class>com.eshoppers.security.SecurityContext</function-class>
         <function-signature>boolean isAuthenticated(jakarta.servlet.http.HttpServletRequest)</function-signature>
     </function>
 </taglib>
