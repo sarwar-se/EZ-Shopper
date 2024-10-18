@@ -10,7 +10,6 @@
 <%@ include file="includes/navigation.jsp" %>
 
 <div class="container">
-
     <div class=" mb-3 p-3 bg-light rounded row">
         <div class="row">
             <c:if test="${message != null}">
@@ -27,6 +26,7 @@
             </c:if>
             <img src="<c:url value="/image/cart.jpg"/>" style="height: 100px" alt="cart-image"/>
         </div>
+
         <div class="col-6">
             <c:if test="${cart != null && cart.cartItems.size() > 0}">
                 <div class="card shadow-sm p-3 mb-5 bg-white">
@@ -45,8 +45,8 @@
                 </div>
             </c:if>
         </div>
-
     </div>
+
     <div class="row">
         <c:forEach var="product" items="${products}">
             <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 mb-4">

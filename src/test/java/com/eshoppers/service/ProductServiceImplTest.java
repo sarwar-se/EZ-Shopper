@@ -1,7 +1,6 @@
 package com.eshoppers.service;
 
 import com.eshoppers.domain.Product;
-import com.eshoppers.dto.ProductDTO;
 import com.eshoppers.repository.ProductRepository;
 import com.eshoppers.service.impl.ProductServiceImpl;
 import org.junit.jupiter.api.Assertions;
