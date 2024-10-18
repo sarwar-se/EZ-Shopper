@@ -1,10 +1,10 @@
 <configuration>
-    <property name="LOG_HOME" value="D:\Development\logs"/>
+    <property name="LOG_HOME" value="D:\Development\logs\eshoppers"/>
     <property name="LOG_FILENAME" value="web_log"/>
     <property name="LOG_FILE_EXT" value="txt"/>
     <property name="LOG_AGE_DAYS" value="10"/>
     <property name="MAX_FILE_SIZE" value="50MB"/>
-    <property name="TOTAL_LOG_SIZE_CAP" value="10GB"/>
+    <property name="TOTAL_LOG_SIZE_CAP" value="5GB"/>
 
     <property name="CONSOLE_LOG_PATTERN"
               value="%d{HH:mm:ss.SS} %magenta([%thread]) %highlight(%-5level) %logger{36}.%M - %msg%n"/>
@@ -32,7 +32,7 @@
     <root level="DEBUG">
         <appender-ref ref="CONSOLE_LOG"/>
     </root>
-<!--    <logger name="com.eshoppers" level="DEBUG" additivity="false">-->
-<!--        <appender-ref ref="FILE_LOG"/>-->
-<!--    </logger>-->
+    <logger name="com.eshoppers" level="DEBUG" additivity="false">
+        <appender-ref ref="FILE_LOG"/>
+    </logger>
 </configuration>
