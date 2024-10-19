@@ -42,8 +42,6 @@ public class OrderServlet extends HttpServlet {
 
         var shippingAddress = copyParametersTo(req);
 
-        LOGGER.info("Shipping address information: {}", shippingAddress);
-
         var errors = ValidationUtil.getInstance().validate(shippingAddress);
 
         if (!errors.isEmpty()) {

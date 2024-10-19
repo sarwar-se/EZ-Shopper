@@ -1,7 +1,6 @@
 package com.eshoppers.web;
 
 import com.eshoppers.security.SecurityContext;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -16,7 +15,7 @@ public class LogoutServlet extends HttpServlet {
     private static final Logger LOGGER = LoggerFactory.getLogger(LogoutServlet.class);
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         LOGGER.info("Logging out");
 
         SecurityContext.logout(req);
