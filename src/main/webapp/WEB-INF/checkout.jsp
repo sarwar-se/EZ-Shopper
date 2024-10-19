@@ -53,7 +53,7 @@
                     </td>
                     <td>
                         <a href="#" class="btn btn-outline-danger"
-                           onclick="doAction(${cartItem.product.getId()}, 'remove')"
+                           onclick="doAction(${cartItem.product.getId()}, 'remove_cart_item')"
                         >
                             Remove
                         </a>
@@ -77,6 +77,7 @@
                         Proceed to Checkout
                     </a>
                 </td>
+                <td></td>
             </tr>
             </tfoot>
         </table>

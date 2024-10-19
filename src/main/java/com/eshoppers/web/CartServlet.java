@@ -58,6 +58,10 @@ public class CartServlet extends HttpServlet {
                 LOGGER.info("Received request to remove product with id: {} to cart", productId);
                 cartService.removeProductToCart(productId, cart);
             }
+            case REMOVE_CART_ITEM -> {
+                LOGGER.info("Received request to remove product cart item with id: {} to cart", productId);
+                cartService.removeCartItemToCart(productId, cart);
+            }
         }
     }
 }

@@ -47,7 +47,7 @@ public class SignupServlet extends HttpServlet {
 
             LOGGER.warn("Username: {} already exists", userDTO.getUsername());
             req.getRequestDispatcher("/WEB-INF/signup.jsp").forward(req, resp);
-        } else if (userService.isNotUniqueEmail(userDTO)) { // TODO: not working
+        } else if (userService.isNotUniqueEmail(userDTO)) {
             errors.put("email", "The email already exists");
             req.setAttribute("userDto", userDTO);
             req.setAttribute("errors", errors);
