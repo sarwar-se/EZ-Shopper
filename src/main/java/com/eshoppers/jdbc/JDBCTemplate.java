@@ -15,8 +15,12 @@ import java.util.List;
 public class JDBCTemplate {
     private static final Logger LOGGER = LoggerFactory.getLogger(JDBCTemplate.class);
 
-    @Inject
     private ConnectionHolder connectionHolder;
+
+    @Inject
+    public JDBCTemplate(ConnectionHolder connectionHolder) {
+        this.connectionHolder = connectionHolder;
+    }
 
     public void updateQuery(String query, Object... parameters) {
         var connection = connectionHolder.getConnection();

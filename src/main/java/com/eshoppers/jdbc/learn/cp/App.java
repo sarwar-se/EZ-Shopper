@@ -16,11 +16,7 @@ public class App {
         final ExecutorService executorService = Executors.newFixedThreadPool(25);
 
         IntStream.range(0, 200)
-                .forEach(iteration -> {
-                    executorService.submit(() -> {
-                        executeCountQuery(iteration + 1);
-                    });
-                });
+                .forEach(iteration -> executorService.submit(() -> executeCountQuery(iteration + 1)));
     }
 
     private static void executeCountQuery(int iteration) {

@@ -10,8 +10,12 @@ import java.sql.SQLException;
 public class TransactionTemplate {
     private final static Logger LOGGER = LoggerFactory.getLogger(TransactionTemplate.class);
 
-    @Inject
     private ConnectionHolder connectionHolder;
+
+    @Inject
+    public TransactionTemplate(ConnectionHolder connectionHolder) {
+        this.connectionHolder = connectionHolder;
+    }
 
     public void execute(Transactional transactional) {
         LOGGER.info("Executing transactions");

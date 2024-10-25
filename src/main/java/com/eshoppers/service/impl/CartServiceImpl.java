@@ -62,20 +62,20 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public void removeCartItemToCart(String productId, Cart cart) {
+        transactionTemplate.execute(() -> {
+            var productToRemove = findProduct(productId);
+            var itemOptional = cart.getCartItems()
+                    .stream()
+                    .filter(cartItem -> cartItem.getProduct().equals(productToRemove))
+                    .findAny();
 
-        var productToRemove = transactionTemplate.execute(() -> findProduct(productId));
+            var cartItem = itemOptional
+                    .orElseThrow(() -> new CartItemNotFoundException("Cart not found by product: " + productToRemove));
 
-        var itemOptional = cart.getCartItems()
-                .stream()
-                .filter(cartItem -> cartItem.getProduct().equals(productToRemove))
-                .findAny();
+            removeCartItemToCart(cartItem, cart);
 
-        var cartItem = itemOptional
-                .orElseThrow(() -> new CartItemNotFoundException("Cart not found by product: " + productToRemove));
-
-        removeCartItemToCart(cartItem, cart);
-
-        updateCart(cart);
+            updateCart(cart);
+        });
     }
 
     private Product findProduct(String productId) {
