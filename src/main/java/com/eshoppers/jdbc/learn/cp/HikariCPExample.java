@@ -36,16 +36,12 @@ public class HikariCPExample {
     public static void main(String[] args) {
         var executorService = Executors.newFixedThreadPool(25);
         IntStream.range(0, 200)
-                .forEach(iteration -> {
-                    executorService.submit(() -> {
-                        executeCountQuery(iteration + 1);
-                    });
-                });
+                .forEach(iteration -> executorService.submit(() -> executeCountQuery(iteration + 1)));
     }
 
     private static void executeCountQuery(int iteration) {
         LOGGER.info("Iteration: {}", iteration);
-        
+
         var sql = "select count(*) from product";
         try (var connection = getConnection()) {
             var statement = connection.prepareStatement(sql);
